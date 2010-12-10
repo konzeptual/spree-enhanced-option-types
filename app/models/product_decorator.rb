@@ -8,11 +8,14 @@ Product.class_eval do
     if (create_variants == "1" || force) && self.option_types.length > 0
       generate_variant_combinations.each_with_index do |option_values, index|
         v = Variant.create({
-            :product => self,
-            :option_values => option_values,
-            :is_master => false,
-            :sku => self.sku.blank? ? "#{self.name.to_url[0..3]}-#{index+1}" : "#{self.sku}-#{index+1}"
-          })
+                             :product => self,
+                             :option_values => option_values,
+                             :is_master => false,
+                             :sku => self.sku.blank? ? "#{self.name.to_url[0..3]}-#{index+1}" : "#{self.sku}-#{index+1}",
+                             # add default weight and on_hand
+                             :weight => master.weight,
+                             :on_hand => master.on_hand
+                           })
         v
       end
     end

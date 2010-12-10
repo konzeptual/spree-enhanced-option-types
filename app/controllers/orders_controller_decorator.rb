@@ -1,9 +1,9 @@
 OrdersController.class_eval do
   # This is hack to get extension working with both edge and 0.9.x series
-  unless private_instance_methods.include?("create_before")
-    create.before :create_before
-    create.after.clear
-  end
+  # unless private_instance_methods.include?("create_before")
+  #   create.before :create_before
+  #   create.after.clear
+  # end
 
   create.before.reject! {|method_name| method_name == :create_before }
   create.before << :enhanced_option_create_before
@@ -20,7 +20,7 @@ OrdersController.class_eval do
       quantity = quantity.to_i
       variant = Variant.find(variant_id)
     end if params[:variants]
-
+    
     params[:option_values].each_pair do |product_id, otov|
       quantity = params[:quantity].to_i if !params[:quantity].is_a?(Array)
       quantity = params[:quantity][variant_id].to_i if params[:quantity].is_a?(Array)
